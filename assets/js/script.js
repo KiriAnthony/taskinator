@@ -121,8 +121,6 @@ var createTaskActions = function(taskId) {
     return actionContainerE1;
 };
 
-formE1.addEventListener("submit", taskFormHandler);
-
 var taskButtonHandler = function(event) {
     // get target element from event
     var targetE1 = event.target;
@@ -231,8 +229,29 @@ var taskStatusChangeHandler = function(event) {
 
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+};
+
+// get task item from localStorage
+// conver task from string back into array of objects
+// iterate through task array and create task elements on page from it
+var loadTasks = function() {
+    var savedTasks = localStorage.getItem("tasks");
+
+    if (!savedTasks) {
+        return false;
+    }
+    console.log("Saved tasks found!");
+    savedTasks = JSON.parse(savedTasks);
+
+    for (var i = 0; i < savedTasks.length; i++) {
+        createTaskE1(savedTasks[i]);
+    }
+};
+
+formE1.addEventListener("submit", taskFormHandler);
 
 pageContentE1.addEventListener("click", taskButtonHandler);
 
 pageContentE1.addEventListener("change", taskStatusChangeHandler);
+
+loadTasks();
